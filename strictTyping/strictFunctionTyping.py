@@ -27,8 +27,7 @@ def mapArgsToKwargs(function: Callable, args: tuple, kwargs: dict) -> tuple[tupl
 	return (), kwargsNew
 
 
-def enforceStrictTyping(strictFunctionDefinition: bool = True):
-
+def strictTyping(enforce: bool = True):
 	def outerFunction(function: Callable):
 
 		@functools.wraps(function)
@@ -38,7 +37,7 @@ def enforceStrictTyping(strictFunctionDefinition: bool = True):
 			allChecksPassed: bool = True
 			for kwarg in newKwargs:
 				expectedType: type = dict(inspect.signature(function).parameters)[kwarg].annotation
-				if not strictFunctionDefinition and expectedType == inspect._empty:
+				if not enforce and expectedType == inspect._empty:
 					continue
 				receivedValue: any = newKwargs[kwarg]
 				receivedType: type = type(receivedValue)
@@ -46,7 +45,7 @@ def enforceStrictTyping(strictFunctionDefinition: bool = True):
 					allChecksPassed = False
 					logger.error(f'parameter {kwarg} with value {receivedValue}: expected type {expectedType}, received type {receivedType}')
 
-			if strictFunctionDefinition:
+			if enforce:
 				returnType: type = inspect.signature(function).return_annotation
 				if returnType == inspect._empty:
 					allChecksPassed = False

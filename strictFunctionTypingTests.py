@@ -1,5 +1,5 @@
 import unittest
-from strictTyping.strictFunctionTyping import *
+from strictTyping import *
 
 
 class MyTestCase(unittest.TestCase):
@@ -134,7 +134,7 @@ class MyTestCase(unittest.TestCase):
 		self.argsToKwargsTester(myFunc, argsExpected, kwargsInsert2, argsExpected, kwargsExpected)  # myFunc(arg3=3, arg1=1)
 
 	def testEnforceStrictTyping1(self):
-		@enforceStrictTyping()
+		@strictTyping()
 		def myFunc(arg: int) -> bool:
 			return True
 
@@ -156,7 +156,7 @@ class MyTestCase(unittest.TestCase):
 		class MyClass:
 			x = None
 
-		@enforceStrictTyping()
+		@strictTyping()
 		def myFunc(arg: MyClass) -> bool:
 			return True
 
@@ -170,7 +170,7 @@ class MyTestCase(unittest.TestCase):
 			myFunc(True)
 
 	def testEnforceStrictTyping3(self):
-		@enforceStrictTyping(False)
+		@strictTyping(False)
 		def myFunc(x):
 			return True
 
@@ -178,7 +178,7 @@ class MyTestCase(unittest.TestCase):
 		self.assertTrue(myFunc('5'))
 
 	def testEnforceStrictTyping4(self):
-		@enforceStrictTyping()
+		@strictTyping()
 		def myFunc(x: int):
 			return True
 
@@ -186,7 +186,7 @@ class MyTestCase(unittest.TestCase):
 			myFunc(5)
 
 	def testEnforceStrictTyping5(self):
-		@enforceStrictTyping()
+		@strictTyping()
 		def myFunc(x):
 			return True
 
@@ -197,7 +197,7 @@ class MyTestCase(unittest.TestCase):
 		class MyClass:
 			y = True
 
-		@enforceStrictTyping()
+		@strictTyping()
 		def myFunc(x: int) -> MyClass:
 			myClass = MyClass()
 			return myClass
@@ -208,7 +208,7 @@ class MyTestCase(unittest.TestCase):
 		class MyClass:
 			y = True
 
-		@enforceStrictTyping()
+		@strictTyping()
 		def myFunc(x: MyClass) -> MyClass:
 			myClass = MyClass()
 			return myClass

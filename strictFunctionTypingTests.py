@@ -1,5 +1,5 @@
 import unittest
-from strictFunctionTyping import *
+from strictTyping.strictFunctionTyping import *
 
 
 class MyTestCase(unittest.TestCase):

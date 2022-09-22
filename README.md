@@ -11,6 +11,12 @@ With enforce=True (default) it will also enforce that the function has a return 
 
 ## Help
 
+Works for builtins (int, floats, str, bool), classes, Union, Optional...
+
+Currently only supports toplevel types. Not supported are nested types like "list[str]"
+
+Only the definition of the function results type is checked, not the actual result type.
+
 ## Installation
 
 Install using `pip install -U strictTyping`

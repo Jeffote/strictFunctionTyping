@@ -1,7 +1,7 @@
 import functools
 import inspect
 import logging
-from typing import Callable
+from typing import Callable, get_args
 
 logger = logging.getLogger()
 
@@ -36,16 +36,20 @@ def strictTyping(enforce: bool = True):
 
 			allChecksPassed: bool = True
 			for kwarg in newKwargs:
-				expectedType: type = dict(inspect.signature(function).parameters)[kwarg].annotation
-				if not enforce and expectedType == inspect._empty:
+				annotation = dict(inspect.signature(function).parameters)[kwarg].annotation
+				expectedTypes: list[type] = list(get_args(annotation))
+				if not expectedTypes:
+					expectedTypes: list[type] = [annotation]
+
+				if (not enforce and inspect._empty in expectedTypes) or any in expectedTypes:
 					continue
 				receivedValue: any = newKwargs[kwarg]
 				receivedType: type = type(receivedValue)
-				if receivedType != expectedType:
+				if receivedType not in expectedTypes:
 					allChecksPassed = False
-					logger.error(f'parameter {kwarg} with value {receivedValue}: expected type {expectedType}, received type {receivedType}')
+					logger.error(f'parameter {kwarg} with value {receivedValue}: expected type {expectedTypes}, received type {receivedType}')
 
-			if enforce:
+			if enforce:  # todo enforce real return type
 				returnType: type = inspect.signature(function).return_annotation
 				if returnType == inspect._empty:
 					allChecksPassed = False

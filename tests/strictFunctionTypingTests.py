@@ -1,4 +1,6 @@
 import unittest
+from typing import Optional, Union
+
 from strictTyping import *
 
 
@@ -217,6 +219,35 @@ class MyTestCase(unittest.TestCase):
 
 		with self.assertRaises(TypeError):
 			myFunc(5)
+
+	def testEnforceStrictTyping8(self):
+		@strictTyping()
+		def myFunc(x: any) -> any:
+			return True
+
+		self.assertTrue(myFunc(5))
+
+	def testEnforceStrictTyping9(self):
+		@strictTyping()
+		def myFunc(x: Union[str, int, float]) -> bool:
+			return True
+
+		self.assertTrue(myFunc(5))
+		self.assertTrue(myFunc('5'))
+		self.assertTrue(myFunc(5.0))
+
+		with self.assertRaises(TypeError):
+			self.assertTrue(myFunc(True))
+
+	def testEnforceStrictTyping10(self):
+		@strictTyping()
+		def myFunc(x: Optional[str]) -> bool:
+			return True
+
+		self.assertTrue(myFunc(None))
+		self.assertTrue(myFunc('5'))
+		with self.assertRaises(TypeError):
+			self.assertTrue(myFunc(True))
 
 
 if __name__ == '__main__':
